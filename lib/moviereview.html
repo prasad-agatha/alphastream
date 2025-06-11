@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://dyrn5ugo563ld.cloudfront.net/bundle.js?date=10-01-2020"></script>
+    <style>
+      body {
+        background: #fafafe url(https://qualetics.com/wp-content/uploads/2020/10/BG-1-min.png)
+          center center/cover no-repeat scroll;
+        padding-top: 0px;
+        padding-bottom: 0px;
+      }
+      .movie-review-column {
+        background: #ffffff;
+        margin: auto auto auto auto;
+        border: 1px solid #cb3f3e;
+        border-radius: 4px 4px 4px 4px;
+        padding: 15px;
+      }
+      .user_submit {
+        background: #cb403f;
+        border-radius: 3px;
+        color: #fff !important;
+        border: 1px solid #cb403f;
+        padding: 12px 50px;
+      }
+      .star-color {
+        color: #ba3938;
+      }
+      #archie_rate s {
+        color: #ccc;
+        font-size: 50px;
+        cursor: default;
+        text-decoration: none;
+        line-height: 50px;
+      }
+      #archie_rate s.rated:before,
+      #archie_rate s.active:before {
+        content: '\2605';
+        color: #ba3938;
+      }
+      #archie_rate s:before {
+        content: '\2606';
+      }
+      .star-rating s:hover,
+      .star-rating s.active {
+        color: #ba3938;
+      }
+      .star-rating s {
+        color: #ccc;
+        font-size: 50px;
+        cursor: default;
+        text-decoration: none;
+        line-height: 50px;
+      }
+      .star-rating {
+        padding: 2px;
+      }
+      .star-rating s:hover:before,
+      .star-rating s.rated:before,
+      .star-rating s.active:before {
+        content: '\2605';
+      }
+      .star-rating s:before {
+        content: '\2606';
+      }
+      .close-btn {
+        text-align: right;
+        padding-top: 10px !important;
+      }
+      .error {
+        color: #ba3938;
+        font-size: 0.9em;
+        font-weight: normal;
+      }
+      .checkbox-label {
+        font-size: 14px;
+      }
+      .fade.in {
+        opacity: 1 !important;
+      }
+      .refer-submit {
+        padding: 10px 19px !important;
+        /* margin-top: 12px; */
+        border-radius: 4px;
+        color: #fff !important;
+        background-color: #cb3f3e;
+        border: 1px solid #cb3f3e;
+      }
+      .review-submit {
+        padding: 10px 19px !important;
+        border-radius: 4px;
+        color: #fff;
+        background-color: #cb3f3e;
+        border: 1px solid #cb3f3e;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- The Modal -->
+    <div class="modal" id="ArchieModel">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content text-center" style="border-bottom: 4px solid #cb4040;">
+          <!-- Modal close -->
+          <button type="button" class="close close-btn px-4" data-dismiss="modal">&times;</button>
+          <!-- Modal body -->
+          <div class="modal-body px-0">
+            <div>
+              <p>Here’s Archie’s rating based on your review.</p>
+              <div>
+                <p class="m-0">Archie</p>
+                <p class="m-0" style="font-size: 20px;">
+                  <span style="color: #cb4040; font-size: 24px;" id="archie"></span>/5
+                </p>
+                <div id="archie_rate"></div>
+              </div>
+              <div class="py-3 my-2" style="background: #efefef;">
+                <p class="m-0">What would you have rated the movie?</p>
+                <div class="star-rating">
+                  <s
+                    ><s
+                      ><s
+                        ><s><s></s></s></s></s
+                  ></s>
+                </div>
+              </div>
+              <div>
+                <input type="hidden" name="user_rating" />
+                <button type="button" class="user_submit mt-2" id="btnSubmitRating">Submit</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Thank you Model -->
+    <div class="modal" id="ThankyouModel">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content text-center" style="border-bottom: 4px solid #cb4040;">
+          <div class="w-100 p-4" style="background: #cb4040;">
+            <div class="w-100 mb-3">
+              <button
+                type="button"
+                class="close close-btn p-0"
+                style="color: #fff;"
+                data-dismiss="modal"
+              >
+                ×
+              </button>
+            </div>
+            <div class="w-100 text-center pt-4">
+              <img
+                src="https://qualetics.com/wp-content/uploads/2020/09/thank-icon.png"
+                style="height: 80px;"
+              />
+              <p style="color: #fff;" class="mt-3">
+                Thank you for your participation! And our best wishes for the contest.
+              </p>
+            </div>
+          </div>
+          <div class="modal-body p-5">
+            <div id="submit-data">
+              <p class="mb-5">
+                <!--Submit another review and increase your chances to win!-->
+                For A Bonus Gift of $50, refer this challenge to five (5) friends and you will be
+                automatically entered into our Monthly Lucky Draw for a $50 Amazon Gift Card
+              </p>
+              <form action="https://qualetics.com/invite/" method="post">
+                <input type="hidden" name="refer_user_name" value="" />
+                <input type="hidden" name="refer_user_email" value="" />
+                <button type="submit" class="refer-submit">Refer Now</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--<form action="https://qualetics.com/invite/" method="post" >-->
+    <!--    <input type="hidden" name="refer_user_name" value="">-->
+    <!--    <button type="submit" class="refer-submit">Refer Now</button>-->
+    <!--</form>-->
+
+    <div class="container">
+      <div class="col-md-12 mt-4">
+        <div class="row">
+          <div class="col-md-12 p-4">
+            <div style="padding: 15px;">
+              <img
+                src="https://cdn.shortpixel.ai/client/to_avif,q_glossy,ret_img/https://qualetics.com/wp-content/uploads/2020/10/gmrc.png"
+                data-src="https://cdn.shortpixel.ai/client/to_avif,q_glossy,ret_img/https://qualetics.com/wp-content/uploads/2020/10/gmrc.png"
+                class="img-fluid lazyloaded"
+                alt=""
+                loading="lazy"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="row movie-review-column">
+          <div class="col-md-6">
+            <form
+              action="https://mlapi.qualetics.com:5436/predictsentiment/"
+              id="my_form"
+              method="post"
+              class="wpcf7-form"
+            >
+              <div class="form-group">
+                <lable style="font-size: 20px;">Movie Title</lable>
+                <select class="js-example-basic-single form-control" name="movieTitle"
+                  ><option value="" hidden>Pick a movie</option></select
+                ><br />
+                <!--<input type="text" name="movieTitle" value="" size="40" class="wpcf7-form-control wpcf7-text review" placeholder="Movie Title*">-->
+              </div>
+              <div class="form-group">
+                <lable style="font-size: 20px;">Your Review</lable>
+                <textarea
+                  name="sentence"
+                  cols="40"
+                  rows="10"
+                  class="form-control review"
+                  style="color: #000;"
+                  aria-invalid="false"
+                  placeholder="Your Review Minimum 50 Characters"
+                ></textarea>
+              </div>
+              <span
+                >The following information is required if you would like to be considered for the
+                lucky draw.</span
+              >
+              <div class="row">
+                <div class="col">
+                  <div class="form-group mb-0">
+                    <lable style="font-size: 20px;">Your Name</lable>
+                    <input
+                      type="text"
+                      name="userName"
+                      value=""
+                      class="form-control review"
+                      aria-invalid="false"
+                      placeholder="First Name, Last Initial"
+                    />
+                  </div>
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input
+                        type="checkbox"
+                        name="userName_share"
+                        class="form-check-input"
+                        value=""
+                      />I don't wish to share my name
+                    </label>
+                  </div>
+                  <!--   <div class="form-group"><span class="wpcf7-form-control-wrap checkbox-498 checkbox-label"><input type="checkbox" name="userName_share" class="mt-0" value="false"><span class="wpcf7-list-item-label">I don't wish to share my name.</span></span>
+                </div> -->
+                </div>
+                <div class="col">
+                  <div class="form-group mb-0" style="font-size: 20px;">
+                    <lable>Email</lable
+                    ><input
+                      type="email"
+                      name="userEmail"
+                      value=""
+                      size="40"
+                      class="form-control review"
+                      aria-invalid="false"
+                      placeholder="Email"
+                    />
+                  </div>
+                  <div class="form-check">
+                    <label class="form-check-label">
+                      <input
+                        type="checkbox"
+                        name="userEmail_share"
+                        class="form-check-input"
+                        value=""
+                      />I don't wish to share my email.
+                    </label>
+                  </div>
+                  <!--  <div class="form-group"><span class="wpcf7-form-control-wrap checkbox-498 checkbox-label"><input type="checkbox" name="userEmail_share" class="mt-0" value="false"><span class="wpcf7-list-item-label">I don't wish to share my email.</span></span></div> -->
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="form-check">
+                  <label class="form-check-label">
+                    <input
+                      type="checkbox"
+                      name="userTerms"
+                      class="form-check-input"
+                      value="I agree to the terms &amp; conditions of Privacy &amp; Policy."
+                    /><span class="wpcf7-list-item-label"
+                      >I agree to the terms &amp; conditions of
+                      <a href="https://qualetics.com/privacy-policy/" style="color: #cb403f;"
+                        >Privacy &amp; Policy.</a
+                      ></span
+                    >
+                  </label>
+                </div>
+                <!-- <span class="wpcf7-form-control-wrap checkbox-498"><input type="checkbox" name="userTerms" class="mt-0" value="I agree to the terms &amp; conditions of Privacy &amp; Policy."><span class="wpcf7-list-item-label">I agree to the terms &amp; conditions of <a href="https://qualetics.com/privacy-policy/" style="color:#cb403f;">Privacy &amp; Policy.</a></span></span> -->
+              </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                  <button type="submit" class="review-submit">Submit</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="col-md-6">
+            <div class="kc_wrapper kc-col-inner-container">
+              <div class="kc-elm kc-css-602674 kc_text_block">
+                <p><b>How To Play</b></p>
+                <ol>
+                  <li style="padding-bottom: 20px;">Select a movie.</li>
+                  <li style="padding-bottom: 20px;">Enter review.</li>
+                  <li style="padding-bottom: 20px;">
+                    Enter your information if you want to win a prize.
+                  </li>
+                  <li style="padding-bottom: 20px;">Submit the form.</li>
+                </ol>
+              </div>
+              <div class="kc-elm kc-css-817969 kc_text_block">
+                <p>
+                  <strong
+                    >*The lucky draw will occur every Friday at 6 PM US Eastern Standard Time
+                    starting October 16th, 2020 until December 31st, 2020.</strong
+                  >
+                </p>
+                <p><strong>*There is no limit on how many times you can play.</strong></p>
+                <p>
+                  <strong
+                    >*Winners will be notified via email and the weekly winner will be announced on
+                    this page every week.</strong
+                  >
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 p-4">
+            <div class="kc-elm kc-css-786756 kc_text_block">
+              <p>
+                <span
+                  style="
+                    font-style: inherit;
+                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans,
+                      Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+                  "
+                  >Meet ARCHIE (Automated Review CompreHension Intelligent Engine), our intelligent
+                  Sentiment Analysis Data Machine that is great (we hope) at understanding the
+                  sentiment in any review, especially movies. In order to test Archie’s artificial
+                  intelligence, we invite you to participate in this “automated rating challenge” to
+                  see how good Archie is at interpreting your rating based on the review you enter.
+                  Start by selecting the movie followed by providing your review. Archie will read
+                  it and guess what your rating would be on a scale of 1 to 5 with 1 being the worst
+                  rating and 5 being the best. After Archie guesses your rating you have the option
+                  to enter what your rating is.</span
+                >
+              </p>
+              <p>
+                <span
+                  style="
+                    font-style: inherit;
+                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans,
+                      Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+                  "
+                  >For every movie review you complete you will have the opportunity to be entered
+                  in a drawing for a weekly Amazon Gift Card worth $25!</span
+                >
+              </p>
+              <p>
+                We do not ask you to provide any personally identifiable information and will not
+                contact you unless you are a weekly winner.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 p-4">
+            <div style="padding: 15px;">
+              <img
+                src="https://cdn.shortpixel.ai/client/to_avif,q_glossy,ret_img/https://qualetics.com/wp-content/uploads/2020/10/review-image-min.png"
+                data-src="https://cdn.shortpixel.ai/client/to_avif,q_glossy,ret_img/https://qualetics.com/wp-content/uploads/2020/10/review-image-min.png"
+                class="img-fluid lazyloaded"
+                alt=""
+                loading="lazy"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript">
+      var qualetics = new Qualetics.service('nlpapp', '2bMCVVz8pDGuUNBd', 'archierc', true, {
+        host: 'wss://api.qualetics.com',
+        port: 443,
+      });
+      qualetics.init();
+      var form_values;
+      $(document).ready(function () {
+        $('#my_form').validate({
+          rules: {
+            movieTitle: 'required',
+            sentence: {
+              required: true,
+              minlength: 50,
+            },
+            userTerms: 'required',
+          },
+          messages: {
+            movieTitle: 'This field is required',
+            sentence: {
+              required: 'This field is required',
+              minlength: 'Your review must be at least 50 characters long',
+            },
+            userTerms: 'Please read and agree to our privacy policy',
+          },
+          errorPlacement: function (error, element) {
+            if (element.is(':checkbox')) {
+              error.appendTo(element.parents('.form-group'));
+            } else {
+              // This is the default behavior
+              error.insertAfter(element);
+            }
+          },
+          submitHandler: handleSubmit,
+        });
+      });
+
+      function handleSubmit() {
+        $('.review-submit').html(
+          '<i style="color:#fff" class="fa fa-spinner fa-spin load-spinner"></i> Submit'
+        );
+        var form = $('#my_form');
+
+        // event.preventDefault(); //prevent default action
+        var post_url = $(form).attr('action'); //get form action url
+        var request_method = $(form).attr('method'); //get form GET/POST method
+        var form_data = $(form).serialize(); //Encode form elements for submission
+        var movie_title = $('form select[name="movieTitle"]').val();
+        var movie_review = $('form textarea[name="sentence"]').val();
+        var user_name = $('form input[name="userName"]').val();
+        var user_state = $('form input[name="userState"]').val();
+        var user_email = $('form input[name="userEmail"]').val();
+        var user_country = $('form input[name="userCountry"]').val();
+        form_values = {
+          movie_title: movie_title,
+          movie_review: movie_review,
+          user_name: user_name,
+          user_state: user_state,
+          user_email: user_email,
+          user_country: user_country,
+        };
+        console.log(form_data);
+        $.ajax({
+          url: post_url,
+          type: request_method,
+          data: form_data,
+          success: function (response) {
+            console.log(response);
+            $('#ArchieModel').modal('show');
+            $('.review-submit').html('Submit');
+            var archie_rating;
+            var data = '';
+            if (response == '1 Star') {
+              archie_rating = 1;
+            } else if (response == '2 Stars') {
+              archie_rating = 2;
+            } else if (response == '3 Stars') {
+              archie_rating = 3;
+            } else if (response == '4 Stars') {
+              archie_rating = 4;
+            } else if (response == '5 Stars') {
+              archie_rating = 5;
+            } else {
+              archie_rating = 0;
+            }
+
+            //console.log(archie_rating);
+            for (var i = 0; i < 5; i++) {
+              if (i < archie_rating) {
+                data += '<s class="active"></s>';
+              } else {
+                data += '<s></s>';
+              }
+            }
+            form_values.archie_score = archie_rating;
+            $('#archie').text(archie_rating);
+            $('#archie_rate').html(data);
+            $('input[name="refer_user_name"]').val(form_values.user_name);
+            $('input[name="refer_user_email"]').val(form_values.user_email);
+            SubmitReview(form_values);
+          },
+          error: function (jqXHR, textStatus, error) {
+            console.log('error in AJAX call...');
+            console.log('jqXHR:', jqXHR);
+            console.log('textStatus:', textStatus);
+            console.log('error:', error);
+          },
+        });
+      }
+
+      function SubmitReview(data) {
+        //console.log(data);
+        qualetics.send({
+          actor: {
+            type: 'Reviewer',
+            id: data.user_email,
+            attributes: {Name: data.user_name, state: data.user_state, country: data.user_country},
+          },
+          action: {name: 'Submit Review', attributes: {'archie rating': data.archie_score}},
+          context: {
+            name: 'Movie Review',
+            attributes: {'movie name': data.movie_title, review: data.movie_review},
+          },
+        });
+      }
+
+      $(function () {
+        $('div.star-rating > s').on('click', function (e) {
+          // remove all active classes first, needed if user clicks multiple times
+          $(this).closest('div').find('.active').removeClass('active');
+
+          $(e.target).parentsUntil('div').addClass('active'); // all elements up from the clicked one excluding self
+          $(e.target).addClass('active'); // the element user has clicked on
+
+          var numStars = $(e.target).parentsUntil('div').length + 1;
+          $('input[name="user_rating"]').val(numStars);
+        });
+
+        $('#btnSubmitRating').click(function () {
+          $('div.star-rating > s').closest('div').find('.active').removeClass('active');
+          var user_rating = $('input[name="user_rating"]').val();
+          //console.log(user_rating);
+          $('#ArchieModel').modal('hide');
+          $('#ThankyouModel').modal('show');
+          SubmitUserRating(form_values, user_rating);
+          $('#my_form').each(function () {
+            this.reset();
+          });
+        });
+      });
+
+      function SubmitUserRating(data, userrating) {
+        //console.log(data,userrating);
+        qualetics.send({
+          actor: {
+            type: 'Reviewer',
+            id: data.user_email,
+            attributes: {Name: data.user_name, state: data.user_state, country: data.user_country},
+          },
+          action: {
+            name: 'Submit Rating',
+            attributes: {'archie rating': data.archie_score, 'user rating': userrating},
+          },
+          context: {
+            name: 'Movie Review',
+            attributes: {'movie name': data.movie_title, review: data.movie_review},
+          },
+        });
+      }
+    </script>
+    <script type="text/javascript">
+      jQuery(document).ready(function ($) {
+        //             var settings = {
+        // 	"async": true,
+        // 	"crossDomain": true,
+        // 	"url": "https://movies-tvshows-data-imdb.p.rapidapi.com/?type=get-popular-movies&page=1&year=2020",
+        // 	"method": "GET",
+        // 	"headers": {
+        // 		"x-rapidapi-host": "movies-tvshows-data-imdb.p.rapidapi.com",
+        // 		"x-rapidapi-key": "cd629ed075msha0df356dc59195dp1cce2ajsn2392401fedb3"
+        // 	}
+        // };
+        // $.ajax(settings).done(function (response) {
+        // 	console.log(response);
+        // 	var data = $.map(response.movie_results, function (obj) {
+        // 	    obj.id = obj.id || obj.title; // replace title with the property used for the text
+        //         obj.text = obj.text || obj.title; // replace title with the property used for the text
+        //       return obj;
+        //     });
+        //     console.log(data);
+        //     $('.js-example-basic-single').select2({
+        //         data:data
+        //     })
+        // });
+        var moviesOptions = [
+          'Black Panther (2018)',
+          'Avengers: Endgame (2019)',
+          'Us (2019)',
+          'Toy Story 4 (2019)',
+          'The Wizard of Oz (1939)',
+          'Lady Bird (2017)',
+          'Mission: Impossible - Fallout (2018)',
+          'Citizen Kane (1941)',
+          'The Irishman (2019)',
+          'BlacKkKlansman (2018)',
+          'Get Out (2017)',
+          'Casablanca (1942)',
+          'Spider-Man: Into the Spider-Verse (2018)',
+          'The Cabinet of Dr. Caligari (Das Cabinet des Dr. Caligari) (1920)',
+          'Mad Max: Fury Road (2015)',
+          'Moonlight (2016)',
+          'A Star Is Born (2018)',
+          'Inside Out (2015)',
+          'The Farewell (2019)',
+          'Modern Times (1936)',
+          'The Third Man (1949)',
+          'A Quiet Place (2018)',
+          'Eighth Grade (2018)',
+          'It Happened One Night (1934)',
+          'Booksmart (2019)',
+          'Dunkirk (2017)',
+          'Coco (2017)',
+          'The Kid (1921)',
+          'Spotlight (2015)',
+          'Selma (2014)',
+          'The Godfather (1972)',
+          'Snow White and the Seven Dwarfs (1937)',
+          'La Grande illusion (Grand Illusion) (1938)',
+          'The Shape of Water (2017)',
+          "Singin' in the Rain (1952)",
+          'Arrival (2016)',
+          'Logan (2017)',
+          'All About Eve (1950)',
+          'E.T. The Extra-Terrestrial (1982)',
+          'The Big Sick (2017)',
+          'Star Wars: The Last Jedi (2017)',
+          'The Favourite (2018)',
+          'Shadow of a Doubt (1943)',
+          'King Kong (1933)',
+          'Star Wars: Episode VII - The Force Awakens (2015)',
+          'Gravity (2013)',
+          'Paddington 2 (2018)',
+          'Boyhood (2014)',
+          'Laura (1944)',
+          'Nosferatu, a Symphony of Horror (Nosferatu, eine Symphonie des Grauens) (Nosferatu the Vampire) (1922)',
+          'Leave No Trace (2018)',
+          'Spider-Man: Far From Home (2019)',
+          'Manchester by the Sea (2016)',
+          'Argo (2012)',
+          'Alien (1979)',
+          '12 Years a Slave (2013)',
+          'La La Land (2016)',
+          'Sunset Boulevard (1950)',
+          'Incredibles 2 (2018)',
+          'Call Me by Your Name (2018)',
+          'Psycho (1960)',
+          'Top Hat (1935)',
+          'The Maltese Falcon (1941)',
+          'The Battle of Algiers (La Battaglia di Algeri) (1967)',
+          'War for the Planet of the Apes (2017)',
+          "A Hard Day's Night (1964)",
+          'The Florida Project (2017)',
+          'Widows (2018)',
+          'Spider-Man: Homecoming (2017)',
+          'M (1931)',
+          'Rebecca (1940)',
+          'The Philadelphia Story (1940)',
+          'Seven Samurai (Shichinin no Samurai) (1956)',
+          'The Night of the Hunter (1955)',
+          'Metropolis (1927)',
+          'Baby Driver (2017)',
+          'North by Northwest (1959)',
+          'Shoplifters (Manbiki kazoku) (2018)',
+          'The Bride of Frankenstein (1935)',
+          'Shazam! (2019)',
+          'Bicycle Thieves (Ladri di biciclette) (The Bicycle Thief) (1949)',
+          'Hell or High Water (2016)',
+          'Up (2009)',
+          'Jaws (1975)',
+          'Captain America: Civil War (2016)',
+          'Pinocchio (1940)',
+          'Lawrence of Arabia (1962)',
+          'Toy Story 2 (1999)',
+          'Rear Window (1954)',
+          'The Lady Eve (1941)',
+          'Toy Story 3 (2010)',
+          'The Godfather, Part II (1974)',
+          'Chinatown (1974)',
+          "Won't You Be My Neighbor? (2018)",
+          'Ad Astra (2019)',
+          'Aladdin (2019)',
+          'Annabelle Comes Home (2019)',
+          'Annihilation (2018)',
+          'Ant-Man and the Wasp (2018)',
+          'Artemis fowl (2020)',
+          'Athlete A (2020)',
+          'Bad boys for life (2020)',
+          'Blade Runner 2049 (2017)',
+          'Blood shot (2020)',
+          'Captain America: The Winter Soldier (2014)',
+          'Charlie chaplin',
+          'Charlies Angles (2019)',
+          "Child's Play,(2019)",
+          'Coco (2017)',
+          'Crip camp (2020)',
+          'Dawn Of The Planet Of The Apes (2014)',
+          'Doctor Sleep (2019)',
+          'Dolittle (2020)',
+          'Downton Abbey (2019)',
+          'Dunkirk (2017)',
+          'Enola holmes 2020',
+          'Extremely Wicked, Shockingly Evil and Vile (2019)',
+          'Fantastic beasts and where to find them 1,(2016)',
+          'Fantastic beasts and where to find them 2,(2018)',
+          'Fantasy island,(2020)',
+          'Frozen 2,(2019)',
+          'Gemini Man,(2019)',
+          'Ghost busters,(2015)',
+          'Ghost of wars,(2020)',
+          'Godzilla: King of the Monsters,(2019)',
+          'Greyhound,(2020)',
+          'Harley quinn: Birds of Prey,(2020)',
+          'Hobbs & Shaw,(2019)',
+          "I'm thinking of the ending things (2020)",
+          'Ice age collision course (2016)',
+          'Inception (2010)',
+          'It: Chapter 2 (2019)',
+          'John Wick: Chapter 3 – Parabellum (2019)',
+          'Joker,(2019)',
+          'Jumanji 3,(2019)',
+          'Jurassic world,(2015)',
+          'Late Night,(2019)',
+          'Marriage Story,(2019)',
+          'Maze runner,(2014)',
+          'Maze runner: the Death cure,(2018)',
+          'Maze runner: the scorch trails,(2015)',
+          'Men In Black: International (2019)',
+          'Mulan,(2020)',
+          'Once Upon A Time In Hollywood,(2019)',
+          'Onward,(2020)',
+          'Percy jackson & the lighting theif,(2010)',
+          'Percy jackson & the olympians,(2011)',
+          'Percy jackson & the sea of monsters,(2013)',
+          'Pokemon: Detective Pikachu (2019)',
+          'Rocketman (2019)',
+          'Roma (2018)',
+          'Scoob (2020)',
+          'Secrety society of second bron royals (2020)',
+          'September (2020)',
+          'Sergio,(2020)',
+          'Skyfall (2012)',
+          'Sonic the hedgehog,2020',
+          'Star Wars: The Rise Of Skywalker,2019',
+          'Terminator: Dark Fate,2019',
+          'Tesla,2020',
+          'The Adventures of Robin Hood (1938)',
+          'The babysitter: killer queen,2020',
+          'The boys in the band,2020',
+          'The call of the wild,2020',
+          'The Dark night,2008',
+          'The Gentlemen,2020',
+          'The grudge,2020',
+          'The invisible man,2020',
+          'The irishman,2019',
+          'The Kitchen,2019',
+          'The last days of american crime,2020',
+          'The LEGO Movie (2014)',
+          'The Lion King,2019',
+          'The Lodge,2020',
+          'The Lord of the Rings: The Two Towers (2002)',
+          'The old gaurd,2020',
+          'The personal history of David Copperfield,2020',
+          'The rhythm section,2020',
+          'The Secret Life of Pets 2,2019',
+          'The trail of chicago 7,2020',
+          'The way back,2020',
+          'The weathering with you,2020',
+          'Thor: Ragnarok (2017)',
+          'Tomorrow land,2015',
+          'Toy Story 4,2019',
+          'Trolls world tour,2020',
+          'Underwater,2020',
+          'Up (2009)',
+          'WALL-E (2008)',
+          'Where’d You Go, Bernadette (2019)',
+          'Wonder Woman: 1984,(2019)',
+          'X-men Dark Phoenix,(2019)',
+          'X-men The New Mutants,(2019)',
+          'Zombieland: Double Tap,(2019)',
+          'Zootopia (2016)',
+        ];
+        var updatedMovies = moviesOptions.sort();
+        $('.js-example-basic-single').select2({
+          data: updatedMovies,
+          sorter: function (data) {
+            return data.sort();
+          },
+        });
+      });
+    </script>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/css/select2.min.css"
+    />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.9/js/select2.min.js"
+      defer
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"
+      defer
+    ></script>
+  </body>
+</html>
